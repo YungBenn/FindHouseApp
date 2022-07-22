@@ -46,7 +46,7 @@ class SplashPage extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'Stop membuang ban  yak waktu\npada tempat yang tidak habitate',
+                    'Stop membuang banyak waktu\npada tempat yang tidak habitate',
                     style: greyTextStyle.copyWith(
                       fontSize: 16,
                     ),
