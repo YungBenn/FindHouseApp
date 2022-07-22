@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "588385541095",
+    "project_id": "bwa-cozy-708b8",
+    "storage_bucket": "bwa-cozy-708b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588385541095:android:f9bb14b251aa5f89683b42",
+        "android_client_info": {
+          "package_name": "com.example.test1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588385541095-sq13u4vg4dftgdb52l0mpr5687rpntqp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrnAyaYFWv3YDCkqw2yktq8AtNkQlerg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588385541095-sq13u4vg4dftgdb52l0mpr5687rpntqp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
