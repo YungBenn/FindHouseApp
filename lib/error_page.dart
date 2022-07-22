@@ -36,7 +36,7 @@ class ErrorPage extends StatelessWidget {
               SizedBox(
                 height: 50,
               ),
-              Container(
+              SizedBox(
                 width: 210,
                 height: 50,
                 child: ElevatedButton(

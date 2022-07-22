@@ -20,16 +20,16 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _launchUrl() async {
-      if (!await launchUrlString(space.mapUrl)) {
+    Future<void> _launchUrl() async {
+      if (await canLaunchUrlString(space.mapUrl)) {
+        launchUrlString(space.mapUrl);
+      } else {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ErrorPage(),
           ),
         );
-      } else if (await launchUrlString(space.mapUrl)) {
-        launchUrlString(space.mapUrl);
       }
     }
 
@@ -179,7 +179,7 @@ class DetailPage extends StatelessWidget {
                       SizedBox(
                         height: 12,
                       ),
-                      Container(
+                      SizedBox(
                         height: 88,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
