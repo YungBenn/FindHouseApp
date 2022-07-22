@@ -34,7 +34,7 @@ class SplashPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 29,
+                    height: 30,
                   ),
                   Text(
                     'Find Cozy House\nto Stay and Happy',
