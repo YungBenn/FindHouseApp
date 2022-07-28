@@ -4,25 +4,24 @@ import 'package:test1/models/space.dart';
 import 'package:test1/theme.dart';
 import 'package:test1/widgets/facility_item.dart';
 import 'package:test1/widgets/rating_item.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final Space space;
   const DetailPage(this.space, {Key? key}) : super(key: key);
 
-  // String _url;
-  // final _url = space.mapUrl;
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
 
-  //final _url = space.mapUrl;
-  //final Uri _url2 = Uri.parse('tel:${space.phone}');
-  //DetailPage({Key? key}) : super(key: key);
+class _DetailPageState extends State<DetailPage> {
+  bool isFav = false;
 
   @override
   Widget build(BuildContext context) {
     Future<void> _launchUrl() async {
-      if (await canLaunchUrlString(space.mapUrl)) {
-        launchUrlString(space.mapUrl);
+      if (await canLaunchUrlString(widget.space.mapUrl)) {
+        launchUrlString(widget.space.mapUrl);
       } else {
         Navigator.push(
           context,
@@ -34,9 +33,42 @@ class DetailPage extends StatelessWidget {
     }
 
     _launchTel() async {
-      if (!await launchUrlString('tel:${space.phone}')) {
-        throw 'Could not launch ${space.phone}';
+      if (!await launchUrlString('tel:${widget.space.phone}')) {
+        throw 'Could not launch ${widget.space.phone}';
       }
+    }
+
+    Future<void> showConfirmation() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirmation'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('Yakin mau nelpon ???'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('yes'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _launchTel();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
 
     return Scaffold(
@@ -46,7 +78,7 @@ class DetailPage extends StatelessWidget {
         child: Stack(
           children: [
             Image.network(
-              space.imageUrl,
+              widget.space.imageUrl,
               width: MediaQuery.of(context).size.width,
               height: 350,
               fit: BoxFit.cover,
@@ -82,7 +114,7 @@ class DetailPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  space.name,
+                                  widget.space.name,
                                   style: blackTextStyle.copyWith(
                                     fontSize: 22,
                                   ),
@@ -92,7 +124,7 @@ class DetailPage extends StatelessWidget {
                                 ),
                                 Text.rich(
                                   TextSpan(
-                                    text: '\$${space.price}',
+                                    text: '\$${widget.space.price}',
                                     style: purpleTextStyle.copyWith(
                                       fontSize: 16,
                                     ),
@@ -116,7 +148,7 @@ class DetailPage extends StatelessWidget {
                                   ),
                                   child: RatingItem(
                                     index: index,
-                                    rating: space.rating,
+                                    rating: widget.space.rating,
                                   ),
                                 );
                               }).toList(),
@@ -148,17 +180,17 @@ class DetailPage extends StatelessWidget {
                             FacilityItem(
                               name: 'kitchen',
                               imageUrl: 'assets/images/icon_kitchen.png',
-                              total: space.numberOfKitchens,
+                              total: widget.space.numberOfKitchens,
                             ),
                             FacilityItem(
                               name: 'bedroom',
                               imageUrl: 'assets/images/icon_bedroom.png',
-                              total: space.numberOfBedrooms,
+                              total: widget.space.numberOfBedrooms,
                             ),
                             FacilityItem(
                               name: 'Cupboard',
                               imageUrl: 'assets/images/icon_cupboard.png',
-                              total: space.numberOfCupboards,
+                              total: widget.space.numberOfCupboards,
                             ),
                           ],
                         ),
@@ -183,7 +215,7 @@ class DetailPage extends StatelessWidget {
                         height: 88,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
-                          children: space.photos.map((item) {
+                          children: widget.space.photos.map((item) {
                             return Container(
                               margin: EdgeInsets.only(
                                 left: 24,
@@ -223,7 +255,7 @@ class DetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${space.address}\n${space.city}',
+                              '${widget.space.address}\n${widget.space.city}',
                               style: greyTextStyle.copyWith(fontSize: 14),
                             ),
                             InkWell(
@@ -244,7 +276,9 @@ class DetailPage extends StatelessWidget {
                         height: 50,
                         width: MediaQuery.of(context).size.width - (2 * edge),
                         child: ElevatedButton(
-                          onPressed: _launchTel,
+                          onPressed: () {
+                            showConfirmation();
+                          },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
                             primary: purpleCol,
@@ -285,9 +319,18 @@ class DetailPage extends StatelessWidget {
                       width: 40,
                     ),
                   ),
-                  Image.asset(
-                    'assets/images/btn_wishlist.png',
-                    width: 40,
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isFav = !isFav;
+                      });
+                    },
+                    child: Image.asset(
+                      isFav
+                          ? 'assets/images/btn_wishlist_active.png'
+                          : 'assets/images/btn_wishlist.png',
+                      width: 40,
+                    ),
                   )
                 ],
               ),
